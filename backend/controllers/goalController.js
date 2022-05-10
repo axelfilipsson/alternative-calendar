@@ -1,43 +1,43 @@
 const asyncHandler = require('express-async-handler')
 
-const Goal = require('../models/goalModel')
+const Activity = require('../models/activityModel')
 const User = require('../models/userModel')
 
-// @desc    Get goals
-// @route   GET /api/goals
+// @desc    Get activities
+// @route   GET /api/activities
 // @access  Private
-const getGoals = asyncHandler(async (req, res) => {
-  const goals = await Goal.find({ user: req.user.id })
+const getActivities = asyncHandler(async (req, res) => {
+  const activities = await Activity.find({ user: req.user.id })
 
-  res.status(200).json(goals)
+  res.status(200).json(activities)
 })
 
-// @desc    Set goal
-// @route   POST /api/goals
+// @desc    Set activity
+// @route   POST /api/activities
 // @access  Private
-const setGoal = asyncHandler(async (req, res) => {
+const setActivity = asyncHandler(async (req, res) => {
   if (!req.body.text) {
     res.status(400)
     throw new Error('Please add a text field')
   }
 
-  const goal = await Goal.create({
+  const activity = await Activity.create({
     text: req.body.text,
     user: req.user.id,
   })
 
-  res.status(200).json(goal)
+  res.status(200).json(activity)
 })
 
-// @desc    Update goal
-// @route   PUT /api/goals/:id
+// @desc    Update activity
+// @route   PUT /api/activities/:id
 // @access  Private
-const updateGoal = asyncHandler(async (req, res) => {
-  const goal = await Goal.findById(req.params.id)
+const updateActivity = asyncHandler(async (req, res) => {
+  const activity = await Activity.findById(req.params.id)
 
-  if (!goal) {
+  if (!activity) {
     res.status(400)
-    throw new Error('Goal not found')
+    throw new Error('Activity not found')
   }
 
   // Check for user
@@ -46,28 +46,28 @@ const updateGoal = asyncHandler(async (req, res) => {
     throw new Error('User not found')
   }
 
-  // Make sure the logged in user matches the goal user
-  if (goal.user.toString() !== req.user.id) {
+  // Make sure the logged in user matches the activity user
+  if (activity.user.toString() !== req.user.id) {
     res.status(401)
     throw new Error('User not authorized')
   }
 
-  const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, req.body, {
+  const updatedActivity = await Activity.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   })
 
-  res.status(200).json(updatedGoal)
+  res.status(200).json(updatedActivity)
 })
 
-// @desc    Delete goal
-// @route   DELETE /api/goals/:id
+// @desc    Delete activity
+// @route   DELETE /api/activities/:id
 // @access  Private
-const deleteGoal = asyncHandler(async (req, res) => {
-  const goal = await Goal.findById(req.params.id)
+const deleteActivity = asyncHandler(async (req, res) => {
+  const activity = await Activity.findById(req.params.id)
 
-  if (!goal) {
+  if (!activity) {
     res.status(400)
-    throw new Error('Goal not found')
+    throw new Error('Activity not found')
   }
 
   // Check for user
@@ -76,20 +76,20 @@ const deleteGoal = asyncHandler(async (req, res) => {
     throw new Error('User not found')
   }
 
-  // Make sure the logged in user matches the goal user
-  if (goal.user.toString() !== req.user.id) {
+  // Make sure the logged in user matches the activity user
+  if (activity.user.toString() !== req.user.id) {
     res.status(401)
     throw new Error('User not authorized')
   }
 
-  await goal.remove()
+  await activity.remove()
 
   res.status(200).json({ id: req.params.id })
 })
 
 module.exports = {
-  getGoals,
-  setGoal,
-  updateGoal,
-  deleteGoal,
+  getActivities,
+  setActivity,
+  updateActivity,
+  deleteActivity,
 }

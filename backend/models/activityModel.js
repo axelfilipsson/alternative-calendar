@@ -11,6 +11,16 @@ const activitySchema = mongoose.Schema(
       type: String,
       required: [true, 'Please add a text value'],
     },
+    date: {
+      type: String,
+    },
+    time: {
+      type: String,
+    },
+    other: {
+      type: String,
+    },
+    
   },
   {
     timestamps: true,

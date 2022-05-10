@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import activityService from './activityService'
 
 const initialState = {
-  activies: [],
+  activities: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -11,7 +11,7 @@ const initialState = {
 
 // Create new activity
 export const createActivity = createAsyncThunk(
-  'activies/create',
+  'activities/create',
   async (activityData, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
@@ -28,13 +28,13 @@ export const createActivity = createAsyncThunk(
   }
 )
 
-// Get user activies
-export const getActivties = createAsyncThunk(
-  'activies/getAll',
+// Get user activities
+export const getActivities = createAsyncThunk(
+  'activities/getAll',
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
-      return await activityService.getActivies(token)
+      return await activityService.getActivities(token)
     } catch (error) {
       const message =
         (error.response &&
@@ -49,7 +49,7 @@ export const getActivties = createAsyncThunk(
 
 // Delete user activity
 export const deleteActivity = createAsyncThunk(
-  'activies/delete',
+  'activities/delete',
   async (id, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
@@ -80,22 +80,22 @@ export const activitySlice = createSlice({
       .addCase(createActivity.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.activies.push(action.payload)
+        state.activities.push(action.payload)
       })
       .addCase(createActivity.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
       })
-      .addCase(getActivies.pending, (state) => {
+      .addCase(getActivities.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(getActivies.fulfilled, (state, action) => {
+      .addCase(getActivities.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.activies = action.payload
+        state.activities = action.payload
       })
-      .addCase(getActivies.rejected, (state, action) => {
+      .addCase(getActivities.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
@@ -106,7 +106,7 @@ export const activitySlice = createSlice({
       .addCase(deleteActivity.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.activies = state.activies.filter(
+        state.activities = state.activities.filter(
           (activity) => activity._id !== action.payload.id
         )
       })

@@ -29,7 +29,7 @@ export const createActivity = createAsyncThunk(
 )
 
 // Get user activies
-export const getActivies = createAsyncThunk(
+export const getActivties = createAsyncThunk(
   'activies/getAll',
   async (_, thunkAPI) => {
     try {
